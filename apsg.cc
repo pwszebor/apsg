@@ -3,3 +3,15 @@
 //
 
 #include "apsg.h"
+
+namespace APSG {
+
+APSG::APSG() {
+
+}
+
+APSG::~APSG() {
+
+}
+
+}

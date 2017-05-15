@@ -6,21 +6,19 @@ ApplicationWindow {
     visible: true
     width: 640
     height: 480
-    title: qsTr("Hello World")
+    title: qsTr("APSG")
 
     SwipeView {
         id: swipeView
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
 
-        Page1 {
+        LMSPage {
+
         }
 
-        Page {
-            Label {
-                text: qsTr("Second page")
-                anchors.centerIn: parent
-            }
+        RLSPage {
+
         }
     }
 
@@ -28,10 +26,14 @@ ApplicationWindow {
         id: tabBar
         currentIndex: swipeView.currentIndex
         TabButton {
-            text: qsTr("First")
+            text: qsTr("LMS")
         }
         TabButton {
-            text: qsTr("Second")
+            text: qsTr("RLS")
         }
     }
+
+//    ActionHandler {
+//
+//    }
 }

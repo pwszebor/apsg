@@ -3,6 +3,7 @@ project(apsg)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5QuickControls2 REQUIRED)
 

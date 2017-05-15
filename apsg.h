@@ -4,6 +4,15 @@
 
 #pragma once
 
-class apsg {
+#include <QObject>
 
+namespace APSG {
+
+class APSG : public QObject {
+    Q_OBJECT
+public:
+    APSG();
+    ~APSG();
 };
+
+}
