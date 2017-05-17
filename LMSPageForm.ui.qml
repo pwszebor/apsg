@@ -1,43 +1,68 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
-import QtQuick.Layouts 1.0
+import QtQuick.Layouts 1.3
 
 Item {
     GridLayout {
+        columnSpacing: 0
+        rowSpacing: 0
+        flow: GridLayout.LeftToRight
         anchors.fill: parent
 
         ColumnLayout {
             id: menu
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            width: parent.width / 3
+            spacing: 0
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+            Layout.fillHeight: true
+            Layout.preferredWidth: 200
             Layout.minimumWidth: 200
             Layout.maximumWidth: 400
-            spacing: 20
 
             Button {
                 id: openButton
-                width: 100
                 text: qsTr("Open file")
+                Layout.fillWidth: false
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                Layout.minimumHeight: 40
+                Layout.minimumWidth: 100
+                Layout.preferredHeight: 40
+                Layout.preferredWidth: 100
             }
 
             Button {
                 id: saveButton
-                width: 100
                 text: qsTr("Save file")
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                Layout.minimumHeight: 40
+                Layout.minimumWidth: 100
+                Layout.preferredHeight: 40
+                Layout.preferredWidth: 100
             }
         }
 
-        Button {
-            id: button
-            text: qsTr("Ok")
-            anchors.left: menu.right
-        }
+        Item {
+            id: item1
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.minimumWidth: 200
+            Layout.margins: margin
 
-        TextField {
-            id: textField
-            placeholderText: qsTr("bla bla")
+            TextField {
+                id: textField
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.left: parent.left
+                placeholderText: qsTr("bla bla")
+            }
+
+            Button {
+                id: button
+                x: 115
+                y: 112
+                text: qsTr("Ok")
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+            }
         }
     }
 }
