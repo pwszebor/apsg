@@ -3,66 +3,57 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 
 Item {
-    GridLayout {
-        columnSpacing: 0
-        rowSpacing: 0
-        flow: GridLayout.LeftToRight
-        anchors.fill: parent
+    anchors.margins: margin
 
-        ColumnLayout {
-            id: menu
-            spacing: 0
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-            Layout.fillHeight: true
-            Layout.preferredWidth: 200
-            Layout.minimumWidth: 200
-            Layout.maximumWidth: 400
+    property alias parametersButton: parametersButton
+    property alias lmsPopup: lmsPopup
 
-            Button {
-                id: openButton
-                text: qsTr("Open file")
-                Layout.fillWidth: false
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-                Layout.minimumHeight: 40
-                Layout.minimumWidth: 100
-                Layout.preferredHeight: 40
-                Layout.preferredWidth: 100
-            }
+    GroupBox {
+        id: controls
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: graphFrame.top
+        anchors.margins: margin
 
-            Button {
-                id: saveButton
-                text: qsTr("Save file")
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-                Layout.minimumHeight: 40
-                Layout.minimumWidth: 100
-                Layout.preferredHeight: 40
-                Layout.preferredWidth: 100
-            }
+        Button {
+            id: parametersButton
+            text: qsTr("Parameters")
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
         }
 
-        Item {
-            id: item1
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            Layout.minimumWidth: 200
-            Layout.margins: margin
-
-            TextField {
-                id: textField
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.left: parent.left
-                placeholderText: qsTr("bla bla")
-            }
-
-            Button {
-                id: button
-                x: 115
-                y: 112
-                text: qsTr("Ok")
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: parent.bottom
-            }
+        Button {
+            id: simulateButton
+            text: qsTr("Simulate")
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
         }
+
+        ComboBox {
+            id: graphSelect
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            displayText: "Choose graph..."
+        }
+    }
+
+    Frame {
+        id: graphFrame
+        height: parent.height * 4 / 5
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.left: parent.left
+        anchors.margins: margin
+    }
+
+    Popup {
+        id: lmsPopup
+        closePolicy: "NoAutoClose"
+        width: parent.width * 5 / 6
+        height: parent.height * 5 / 6
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
+        modal: true
     }
 }

@@ -16,18 +16,22 @@ ApplicationWindow {
     GridLayout {
         id: mainLayout
         anchors.fill: parent
-        anchors.margins: margin
+        anchors.margins: 0
         SwipeView {
             id: swipeView
             anchors.fill: parent
             currentIndex: tabBar.currentIndex
 
             LMSPage {
-
+                id: lmsPage
             }
 
             RLSPage {
+                id: rlsPage
+            }
 
+            onCurrentIndexChanged: {
+                APSG.algorithm = currentIndex == 0 ? APSG.LMS : APSG.RLS
             }
         }
     }
@@ -40,9 +44,6 @@ ApplicationWindow {
         }
         TabButton {
             text: qsTr("RLS")
-            onReleased: {
-                APSG.num = 5
-            }
         }
     }
 

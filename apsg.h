@@ -9,28 +9,31 @@
 #include <QtQml/QQmlEngine>
 
 namespace apsg {
+Q_NAMESPACE
 
 class APSG : public QObject {
     Q_OBJECT
 public:
+
+    enum class Algorithm {
+        RLS,
+        LMS
+    };
+    Q_ENUM(Algorithm)
+
     static APSG &sharedInstance();
     static QObject *typeProvider(QQmlEngine *, QJSEngine *);
 
-    Q_PROPERTY(int num READ num WRITE setNum NOTIFY numChanged)
+    Q_PROPERTY(Algorithm algorithm READ algorithm WRITE changeAlgorithm NOTIFY algorithmChange)
 
-    void setNum(int n) {
-        _num = n;
-    }
-
-    int num() {
-        return _num;
-    }
+    const Algorithm algorithm() const;
+    void changeAlgorithm(const Algorithm algorithm);
 
 signals:
-    void numChanged();
+    void algorithmChange();
 
 private slots:
-    void numChange();
+    void algorithmChanged();
 
 private:
     APSG();
@@ -39,7 +42,7 @@ private:
     APSG(const APSG &) = delete;
     APSG(APSG &&) = delete;
 
-    int _num;
+    Algorithm _algorithm;
 };
 
 }
