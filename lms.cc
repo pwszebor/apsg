@@ -55,13 +55,13 @@ QVariant Lms::changeParameters(const QJSValue &parameters) {
 
     bool success = false;
     QString Lstr = parameters.property("L").toString();
-    double L = Lstr.toDouble(&success);
-    if (!success && L > 0.0) {
+    unsigned long long L = Lstr.toULongLong(&success, 10);
+    if (!success || L < 2) {
         return ERR_INVALID_L;
     }
     QString alphaStr = parameters.property("alpha").toString();
     double alpha = alphaStr.toDouble(&success);
-    if (!success && alpha > 0.0) {
+    if (!success && alpha >= 0.0) {
         return ERR_INVALID_ALPHA;
     }
 
@@ -82,9 +82,12 @@ arma::Col<double> Lms::parseVector(const QString &filePath) {
     }
     QTextStream stream(&fileX);
     bool success = false;
+    unsigned long long n = 0;
     while (!stream.atEnd()) {
         QString line = fileX.readLine();
-        vector << line.toDouble(&success);
+        vector.resize(n + 1);
+        vector(n) = line.toDouble(&success);
+        ++n;
         if (!success) {
             vector.reset();
             return vector;
@@ -97,7 +100,8 @@ arma::Col<double> Lms::parseVector(const QString &filePath) {
 void Lms::simulate(std::function<void(SIMULATION_STATUS)> changeStatus) {
     std::cout << __PRETTY_FUNCTION__ << "\n";
     changeStatus(SIM_SIMULATING);
-    std::thread(executeAlgorithm, changeStatus).detach();
+    auto execute = std::bind(&Lms::executeAlgorithm, this, std::placeholders::_1);
+    std::thread(execute, changeStatus).detach();
 }
 
 void Lms::stopSimulation() {
@@ -108,11 +112,39 @@ void Lms::stopSimulation() {
 void Lms::executeAlgorithm(std::function<void(SIMULATION_STATUS)> changeStatus) {
     std::cout << __PRETTY_FUNCTION__ << "\n";
 
-    int N = _x.n_elem;
-    vectorCol e(N, zeros);
-    vectorCol y(N, zeros);
-    matrix ff(L, N, zeros);
-    vectorRow f_n(L,)
+    const unsigned long long N = _x.n_elem;
+    vectorRow e(N, arma::fill::zeros);
+    vectorRow y(N, arma::fill::zeros);
+    matrix ff(_L, N, arma::fill::zeros);
+    vectorCol f_n(_L, arma::fill::zeros);
+    vectorCol x_n(_L, arma::fill::zeros);
+
+    for (unsigned long long n = 0; n < N; ++n) {
+        if (_stopExecution) {
+            _stopExecution = false;
+            changeStatus(SIM_STOPPED);
+            return;
+        }
+
+        x_n = arma::shift(x_n, 1); x_n(0) = _x(n);  // x_n = [x(n); x_n(1:end-1,1)];
+
+        y(n) = arma::as_scalar(f_n.t() * x_n);      // y(n) = f_n' * x_n;
+        e(n) = _d(n) - y(n);                        // e(n) = d(n) - y(n);
+        f_n = f_n + _alpha * e(n) * x_n;            // f_n = f_n + alpha * e(n) * x_n;
+
+        ff.col(n) = f_n;                            // ff(:,n) = f_n;
+    }
+
+    _y = y;
+    _e = e;
+    _ff = ff;
+
+//    std::cout << "\ny:\n";
+//    _y.print();
+//    std::cout << "\ne:\n";
+//    _e.print();
+//    std::cout << "\nff:\n";
+//    _ff.print();
 
     changeStatus(SIM_COMPLETED);
 }

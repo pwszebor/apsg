@@ -7,6 +7,8 @@ Item {
 
     property alias parametersButton: parametersButton
     property alias graphSelect: graphSelect
+    property alias graphButton: graphButton
+    property alias graphButtonBackground: graphButtonBackground
     property alias lmsPopup: lmsPopup
     property alias popupCancel: cancelButton
     property alias saveParameters: saveButton
@@ -47,11 +49,25 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
         }
 
+        Button {
+            id: graphButton
+            text: "Draw graph"
+            background: Rectangle {
+                id: graphButtonBackground
+                radius: 4
+                color: grayColor
+            }
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.rightMargin: margin
+            anchors.right: graphSelect.left
+        }
+
         ComboBox {
             id: graphSelect
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            displayText: "Choose graph..."
+            model: ["x", "d", "y", "e", "f"]
+            onCountChanged: displayText = model[currentIndex]
         }
     }
 
@@ -116,9 +132,9 @@ Item {
                 id: lTextField
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                validator: DoubleValidator {
+                validator: IntValidator {
+                    bottom: 1
                     locale: "en_US"
-                    notation: "ScientificNotation"
                 }
             }
 
@@ -133,6 +149,7 @@ Item {
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 validator: DoubleValidator {
+                    bottom: 0
                     locale: "en_US"
                     notation: "ScientificNotation"
                 }

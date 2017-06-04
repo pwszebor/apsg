@@ -53,26 +53,32 @@ ApplicationWindow {
 
                 function simulationRunning() {
                     simulateButtonBackground.color = redColor
+                    graphButtonBackground.color = redColor
                     simulateButton.text = "Stop simulation"
                     busyIndicator.running = true
                     parametersButton.enabled = false
                     graphSelect.enabled = false
+                    graphButton.enabled = false
                 }
 
                 function readyForSimulation() {
                     simulateButtonBackground.color = greenColor
+                    graphButtonBackground.color = greenColor
                     simulateButton.text = "Simulate"
                     busyIndicator.running = false
                     parametersButton.enabled = true
                     graphSelect.enabled = true
+                    graphButton.enabled = true
                 }
 
                 function notReadyForSimulation() {
                     simulateButtonBackground.color = grayColor
+                    graphButtonBackground.color = grayColor
                     simulateButton.text = "Simulate"
                     busyIndicator.running = false
                     parametersButton.enabled = true
                     graphSelect.enabled = true
+                    graphButton.enabled = true
                 }
 
                 property bool parametersReady: false
@@ -101,6 +107,9 @@ ApplicationWindow {
                     if (parametersReady) {
                         APSG.simulate()
                     }
+                }
+                graphButton.onReleased: {
+
                 }
 
                 BusyIndicator {

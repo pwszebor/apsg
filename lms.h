@@ -13,7 +13,6 @@ class Lms : public Algorithm {
     typedef arma::Col<double> vectorCol;
     typedef arma::Row<double> vectorRow;
     typedef arma::Mat<double> matrix;
-    using arma::fill::zeros;
 
 public:
     static Lms &sharedInstance();
@@ -36,10 +35,10 @@ private:
 
     vectorCol _x;
     vectorCol _d;
-    double _L;
+    unsigned long long _L;
     double _alpha;
 
-    vectorCol _e;
-    vectorCol _y;
+    vectorRow _e;
+    vectorRow _y;
     matrix _ff;
 };
