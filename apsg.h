@@ -7,30 +7,38 @@
 #include <QObject>
 #include <QtQml/QJSEngine>
 #include <QtQml/QQmlEngine>
-
-namespace apsg {
-Q_NAMESPACE
+#include <QVariant>
+#include "algorithm.h"
 
 class APSG : public QObject {
     Q_OBJECT
 public:
-
-    enum class Algorithm {
+    enum class AlgorithmType {
         RLS,
         LMS
     };
-    Q_ENUM(Algorithm)
+    Q_ENUM(AlgorithmType)
 
     static APSG &sharedInstance();
     static QObject *typeProvider(QQmlEngine *, QJSEngine *);
 
-    Q_PROPERTY(Algorithm algorithm READ algorithm WRITE changeAlgorithm NOTIFY algorithmChange)
+    Q_PROPERTY(AlgorithmType algorithm READ algorithm WRITE changeAlgorithm NOTIFY algorithmChange)
+    Q_PROPERTY(int simulation READ simulation NOTIFY simulationStatusChanged)
 
-    const Algorithm algorithm() const;
-    void changeAlgorithm(const Algorithm algorithm);
+    const AlgorithmType algorithm() const;
+    void changeAlgorithm(const AlgorithmType algorithm);
+
+    Q_INVOKABLE QVariant changeParameters(const QJSValue parameters);
+    Q_INVOKABLE const QString errorString(int errorCode) const;
+
+    const int simulation() const;
+    Q_INVOKABLE int simulate();
+    Q_INVOKABLE int stopSimulation();
+    void changeStatus(SIMULATION_STATUS status);
 
 signals:
     void algorithmChange();
+    void simulationStatusChanged();
 
 private slots:
     void algorithmChanged();
@@ -42,7 +50,8 @@ private:
     APSG(const APSG &) = delete;
     APSG(APSG &&) = delete;
 
-    Algorithm _algorithm;
+    AlgorithmType _algorithmType;
+    Algorithm *_algorithm;
+    QJSValue _parameters;
+    SIMULATION_STATUS _simulation;
 };
-
-}

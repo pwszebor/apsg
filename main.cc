@@ -3,9 +3,8 @@
 #include <QtGui/QGuiApplication>
 #include "apsg.h"
 
-using apsg::APSG;
-
 int main(int argc, char **argv) {
+    std::cout << __PRETTY_FUNCTION__ << "\n";
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
 

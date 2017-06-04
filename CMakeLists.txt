@@ -10,9 +10,10 @@ find_package(Qt5QuickControls2 REQUIRED)
 
 set(SOURCE_FILES
         main.cc
-        apsg.cc)
+        apsg.cc
+        lms.cc)
 
 qt5_add_resources(RCC_SOURCES qml.qrc)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${RCC_SOURCES})
-target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::QuickControls2 armadillo)
+target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::QuickControls2 armadillo pthread)

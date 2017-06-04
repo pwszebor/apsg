@@ -3,20 +3,22 @@
 //
 
 #include <iostream>
+#include <QtQml/QQmlProperty>
+#include <QtQml/QJSValueIterator>
 #include "apsg.h"
+#include "lms.h"
 
-namespace apsg {
-
-using Algorithm = APSG::Algorithm;
-
-std::ostream &operator<<(std::ostream &out, const Algorithm algorithm) {
-    out << (algorithm == Algorithm::LMS ? "LMS" : "RLS");
+std::ostream &operator<<(std::ostream &out, const APSG::AlgorithmType algorithm) {
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+    out << (algorithm == APSG::AlgorithmType::LMS ? "LMS" : "RLS");
     return out;
 }
 
 APSG::APSG() {
     std::cout << __PRETTY_FUNCTION__ << "\n";
-    _algorithm = Algorithm::LMS;
+    _algorithmType = AlgorithmType::LMS;
+    _algorithm = &Lms::sharedInstance();
+    _simulation = SIM_STOPPED;
     connect(this, SIGNAL(algorithmChange(void)), this, SLOT(algorithmChanged(void)));
 }
 
@@ -35,20 +37,50 @@ QObject *APSG::typeProvider(QQmlEngine *, QJSEngine *) {
     return &APSG::sharedInstance();
 }
 
-const Algorithm APSG::algorithm() const {
+const APSG::AlgorithmType APSG::algorithm() const {
     std::cout << __PRETTY_FUNCTION__ << "\n";
-    return _algorithm;
+    return _algorithmType;
 }
 
 void APSG::algorithmChanged() {
     std::cout << __PRETTY_FUNCTION__ << "\n";
-    std::cout << _algorithm << "\n";
+    std::cout << _algorithmType << "\n";
 }
 
-void APSG::changeAlgorithm(const Algorithm algorithm) {
+void APSG::changeAlgorithm(const APSG::AlgorithmType algorithm) {
     std::cout << __PRETTY_FUNCTION__ << "\n";
-    _algorithm = algorithm;
+    _algorithmType = algorithm;
+    this->_algorithm = &Lms::sharedInstance();
     emit algorithmChange();
 }
 
+QVariant APSG::changeParameters(const QJSValue parameters) {
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+    return _algorithm->changeParameters(parameters);
+}
+
+const QString APSG::errorString(int errorCode) const {
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+    return QString(errorStrings[errorCode]);
+}
+
+const int APSG::simulation() const {
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+    return (int)_simulation;
+}
+
+int APSG::simulate() {
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+    auto function = std::bind(&APSG::changeStatus, this, std::placeholders::_1);
+    _algorithm->simulate(function);
+}
+
+int APSG::stopSimulation() {
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+    _algorithm->stopSimulation();
+}
+
+void APSG::changeStatus(SIMULATION_STATUS status) {
+    _simulation = status;
+    emit simulationStatusChanged();
 }
