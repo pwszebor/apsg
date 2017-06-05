@@ -2,6 +2,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
+import QtQuick.Controls.Material 2.0
 import APSG 1.0
 
 ApplicationWindow {
@@ -82,6 +83,7 @@ ApplicationWindow {
                 }
 
                 property bool parametersReady: false
+                property bool readyToGraph: simulation === 2
 
                 onParametersChanged: {
                     if (initializing) {
@@ -109,7 +111,30 @@ ApplicationWindow {
                     }
                 }
                 graphButton.onReleased: {
-
+                    var title = (function () {
+                        if (!readyToGraph) {
+                            return ""
+                        }
+                        switch (graphSelect.currentIndex) {
+                        case 0:
+                            return "Wykres danych wejściowych x"
+                        case 1:
+                            return "Wykres wektora wzorcowego d"
+                        case 2:
+                            return "Wykres wektora wyjściowego y"
+                        case 3:
+                            return "Wykres modułu błędu e"
+                        case 4:
+                            return "Wykres współczynników filtru f"
+                        default:
+                            return ""
+                        }
+                    })()
+                    if (readyToGraph) {
+                        APSG.setDataForPlotter(graph.plot, graphSelect.currentText, "nr próbki", graphSelect.currentText, graphSelect.currentIndex === 3)
+                        graph.plot.plot()
+                    }
+                    graph.title.text = title
                 }
 
                 BusyIndicator {

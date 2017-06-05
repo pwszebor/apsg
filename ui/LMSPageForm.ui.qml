@@ -8,6 +8,7 @@ Item {
     property alias parametersButton: parametersButton
     property alias graphSelect: graphSelect
     property alias graphButton: graphButton
+    property alias graph: graph
     property alias graphButtonBackground: graphButtonBackground
     property alias lmsPopup: lmsPopup
     property alias popupCancel: cancelButton
@@ -27,7 +28,7 @@ Item {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.bottom: graphFrame.top
+        anchors.bottom: graph.top
         anchors.margins: margin
 
         Button {
@@ -71,13 +72,8 @@ Item {
         }
     }
 
-    Frame {
-        id: graphFrame
-        height: parent.height * 4 / 5
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.left: parent.left
-        anchors.margins: margin
+    PlotView {
+        id: graph
     }
 
     Popup {

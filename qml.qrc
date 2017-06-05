@@ -1,10 +1,11 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>LMSPage.qml</file>
-        <file>LMSPageForm.ui.qml</file>
-        <file>RLSPage.qml</file>
-        <file>RLSPageForm.ui.qml</file>
-        <file>qtquickcontrols2.conf</file>
+        <file>ui/main.qml</file>
+        <file>ui/LMSPage.qml</file>
+        <file>ui/LMSPageForm.ui.qml</file>
+        <file>ui/RLSPage.qml</file>
+        <file>ui/RLSPageForm.ui.qml</file>
+        <file>ui/PlotView.qml</file>
+        <file>ui/qtquickcontrols2.conf</file>
     </qresource>
 </RCC>

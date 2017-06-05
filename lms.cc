@@ -11,22 +11,22 @@
 #include <thread>
 
 Lms::~Lms() {
-    std::cout << __PRETTY_FUNCTION__ << "\n";
+    std::cout << __PRETTY_FUNCTION__ << std::this_thread::get_id() << "\n";
 }
 
 Lms::Lms() {
-    std::cout << __PRETTY_FUNCTION__ << "\n";
+    std::cout << __PRETTY_FUNCTION__ << std::this_thread::get_id() << "\n";
     _stopExecution = false;
 }
 
 Lms &Lms::sharedInstance() {
-    std::cout << __PRETTY_FUNCTION__ << "\n";
+    std::cout << __PRETTY_FUNCTION__ << std::this_thread::get_id() << "\n";
     static Lms instance;
     return instance;
 }
 
 QVariant Lms::changeParameters(const QJSValue &parameters) {
-    std::cout << __PRETTY_FUNCTION__ << "\n";
+    std::cout << __PRETTY_FUNCTION__ << std::this_thread::get_id() << "\n";
     if (!parameters.hasProperty("fileX")) {
         return ERR_INVALID_X;
     }
@@ -74,7 +74,7 @@ QVariant Lms::changeParameters(const QJSValue &parameters) {
 }
 
 arma::Col<double> Lms::parseVector(const QString &filePath) {
-    std::cout << __PRETTY_FUNCTION__ << "\n";
+    std::cout << __PRETTY_FUNCTION__ << std::this_thread::get_id() << "\n";
     vectorCol vector;
     QFile fileX(QUrl(filePath).path());
     if (!fileX.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -98,19 +98,19 @@ arma::Col<double> Lms::parseVector(const QString &filePath) {
 }
 
 void Lms::simulate(std::function<void(SIMULATION_STATUS)> changeStatus) {
-    std::cout << __PRETTY_FUNCTION__ << "\n";
+    std::cout << __PRETTY_FUNCTION__ << std::this_thread::get_id() << "\n";
     changeStatus(SIM_SIMULATING);
     auto execute = std::bind(&Lms::executeAlgorithm, this, std::placeholders::_1);
     std::thread(execute, changeStatus).detach();
 }
 
 void Lms::stopSimulation() {
-    std::cout << __PRETTY_FUNCTION__ << "\n";
+    std::cout << __PRETTY_FUNCTION__ << std::this_thread::get_id() << "\n";
     _stopExecution = true;
 }
 
 void Lms::executeAlgorithm(std::function<void(SIMULATION_STATUS)> changeStatus) {
-    std::cout << __PRETTY_FUNCTION__ << "\n";
+    std::cout << __PRETTY_FUNCTION__ << std::this_thread::get_id() << "\n";
 
     const unsigned long long N = _x.n_elem;
     vectorRow e(N, arma::fill::zeros);
@@ -147,4 +147,23 @@ void Lms::executeAlgorithm(std::function<void(SIMULATION_STATUS)> changeStatus) 
 //    _ff.print();
 
     changeStatus(SIM_COMPLETED);
+}
+
+std::vector<std::vector<double>> Lms::getData(const QString &plotType) {
+    std::cout << __PRETTY_FUNCTION__ << std::this_thread::get_id() << "\n";
+    std::vector<std::vector<double>> data;
+    if (plotType == "x") {
+        data.push_back(arma::conv_to<std::vector<double>>::from(_x));
+    } else if (plotType == "d") {
+        data.push_back(arma::conv_to<std::vector<double>>::from(_d));
+    } else if (plotType == "y") {
+        data.push_back(arma::conv_to<std::vector<double>>::from(_y));
+    } else if (plotType == "e") {
+        data.push_back(arma::conv_to<std::vector<double>>::from(arma::abs(_e)));
+    } else if (plotType == "f") {
+        _ff.each_row([&data](vectorRow &row) {
+            data.push_back(arma::conv_to<std::vector<double>>::from(row));
+        });
+    }
+    return data;
 }

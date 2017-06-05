@@ -9,6 +9,7 @@
 #include <QtQml/QQmlEngine>
 #include <QVariant>
 #include "algorithm.h"
+#include "plot.h"
 
 class APSG : public QObject {
     Q_OBJECT
@@ -35,6 +36,8 @@ public:
     Q_INVOKABLE int simulate();
     Q_INVOKABLE int stopSimulation();
     void changeStatus(SIMULATION_STATUS status);
+
+    Q_INVOKABLE void setDataForPlotter(Plot *plotter, const QString &plotType, const QString &xAxis, const QString &yAxis, bool logarithmic);
 
 signals:
     void algorithmChange();

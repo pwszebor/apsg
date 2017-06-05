@@ -4,10 +4,6 @@
 
 #pragma once
 
-#include <QObject>
-#include <QString>
-#include <map>
-
 enum APSG_ERROR {
     ERR_NONE,
     ERR_INVALID_X,

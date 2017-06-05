@@ -20,9 +20,11 @@ public:
     QVariant changeParameters(const QJSValue &parameters) override;
     void simulate(std::function<void(SIMULATION_STATUS)> changeStatus) override;
     void stopSimulation() override;
+    std::vector<std::vector<double>> getData(const QString &plotType) override;
 
 private:
     arma::Col<double> parseVector(const QString &filePath);
+
     void executeAlgorithm(std::function<void(SIMULATION_STATUS)> changeStatus);
 
 private:
