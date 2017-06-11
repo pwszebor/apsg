@@ -6,6 +6,7 @@
 #include <thread>
 #include "apsg.h"
 #include "lms.h"
+#include "rls.h"
 
 std::ostream &operator<<(std::ostream &out, const APSG::AlgorithmType algorithm) {
     std::cout << __PRETTY_FUNCTION__ << std::this_thread::get_id() << "\n";
@@ -49,7 +50,11 @@ void APSG::algorithmChanged() {
 void APSG::changeAlgorithm(const APSG::AlgorithmType algorithm) {
     std::cout << __PRETTY_FUNCTION__ << std::this_thread::get_id() << "\n";
     _algorithmType = algorithm;
-    this->_algorithm = &Lms::sharedInstance();
+    if (_algorithmType == AlgorithmType::LMS) {
+        this->_algorithm = &Lms::sharedInstance();
+    } else {
+        this->_algorithm = &Rls::sharedInstance();
+    }
     emit algorithmChange();
 }
 
@@ -85,10 +90,10 @@ void APSG::changeStatus(SIMULATION_STATUS status) {
     emit simulationStatusChanged();
 }
 
-void APSG::setDataForPlotter(Plot *plotter, const QString &plotType, const QString &xAxis, const QString &yAxis, bool logarithmic) {
+void APSG::setDataForPlotter(Plot *plotter, const QString &plotType, const QString &title, const QString &xAxis, const QString &yAxis, bool logarithmic) {
     std::cout << __PRETTY_FUNCTION__ << std::this_thread::get_id() << "\n";
     if (!plotter) {
         return;
     }
-    plotter->setData(_algorithm->getData(plotType), xAxis, yAxis, logarithmic);
+    plotter->setData(_algorithm->getData(plotType), title, xAxis, yAxis, logarithmic);
 }

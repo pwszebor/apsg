@@ -5,6 +5,8 @@
 #pragma once
 
 #include "apsgError.h"
+#include <QVariant>
+#include <QJSValue>
 #include <iostream>
 #include <functional>
 #include <thread>

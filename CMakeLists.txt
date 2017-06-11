@@ -4,7 +4,7 @@ project(apsg)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -larmadillo")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -larmadillo -std=c++14")
 
 find_package(Qt5QuickControls2 REQUIRED)
 find_package(Qt5Widgets REQUIRED)
@@ -15,7 +15,8 @@ set(SOURCE_FILES
         apsg.cc
         lms.cc
         plot.cc
-        QCustomPlot-source/qcustomplot-source/qcustomplot.cpp)
+        QCustomPlot-source/qcustomplot-source/qcustomplot.cpp
+        rls.cc)
 
 include_directories(QCustomPlot-source/qcustomplot-source)
 
