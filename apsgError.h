@@ -26,5 +26,9 @@ static constexpr const char *errorStrings[] = {
         "",
         "Invalid x vector values",
         "Invalid d vector values",
+        "Invalid L value",
+        "Invalid alpha value",
+        "Invalid lambda value",
+        "Invalid gamma value",
         "Lengths of x and d vectors not matching"
 };
