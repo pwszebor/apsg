@@ -1,0 +1,7 @@
+/home/pwszebor/Dropbox/dev/cpp/clion/apsg/armadillo-7.950.0/CMakeFiles/install/strip.dir
+/home/pwszebor/Dropbox/dev/cpp/clion/apsg/armadillo-7.950.0/CMakeFiles/install/local.dir
+/home/pwszebor/Dropbox/dev/cpp/clion/apsg/armadillo-7.950.0/CMakeFiles/armadillo.dir
+/home/pwszebor/Dropbox/dev/cpp/clion/apsg/armadillo-7.950.0/CMakeFiles/install.dir
+/home/pwszebor/Dropbox/dev/cpp/clion/apsg/armadillo-7.950.0/CMakeFiles/list_install_components.dir
+/home/pwszebor/Dropbox/dev/cpp/clion/apsg/armadillo-7.950.0/CMakeFiles/edit_cache.dir
+/home/pwszebor/Dropbox/dev/cpp/clion/apsg/armadillo-7.950.0/CMakeFiles/rebuild_cache.dir
