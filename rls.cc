@@ -66,13 +66,13 @@ QVariant Rls::changeParameters(const QJSValue &parameters) {
     }
     QString lambdaStr = parameters.property("lambda").toString();
     double lambda = lambdaStr.toDouble(&success);
-    if (!success && lambda >= 0.0) {
-        return ERR_INVALID_ALPHA;
+    if (!success || lambda <= 0.0 || lambda > 1.0) {
+        return ERR_INVALID_LAMBDA;
     }
     QString gammaStr = parameters.property("gamma").toString();
     double gamma = gammaStr.toDouble(&success);
-    if (!success && gamma >= 0.0) {
-        return ERR_INVALID_ALPHA;
+    if (!success || gamma < 0.0) {
+        return ERR_INVALID_GAMMA;
     }
 
     _x = xVector;

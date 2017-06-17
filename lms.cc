@@ -63,7 +63,7 @@ QVariant Lms::changeParameters(const QJSValue &parameters) {
     }
     QString alphaStr = parameters.property("alpha").toString();
     double alpha = alphaStr.toDouble(&success);
-    if (!success && alpha >= 0.0) {
+    if (!success || alpha < 0.0) {
         return ERR_INVALID_ALPHA;
     }
 
